@@ -7,29 +7,37 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "paises")
-public class Pais {
+@Table(name = "regiones")
+public class Region {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(length=20, nullable=true)
+
+    @Column(length = 20, nullable = true)
     private String nombre;
 
-    @OneToMany(mappedBy = "paises")
-    private List<Region> regiones;
+    @ManyToOne
+    @JoinColumn(name = "pais_id")
+    private Pais paises;
 
-    public Pais() {
+    @OneToMany(mappedBy = "regiones")
+    private List<Ciudad> ciudades;
+
+    public Region() {
     }
 
-    public Pais(Long id, String nombre, List<Region> regiones) {
+    public Region(Long id, String nombre, Pais paises, List<Ciudad> ciudades) {
         this.id = id;
         this.nombre = nombre;
-        this.regiones = regiones;
+        this.paises = paises;
+        this.ciudades = ciudades;
     }
 
     public Long getId() {
@@ -48,12 +56,12 @@ public class Pais {
         this.nombre = nombre;
     }
 
-    public List<Region> getRegiones() {
-        return regiones;
+    public List<Ciudad> getCiudades() {
+        return ciudades;
     }
 
-    public void setRegiones(List<Region> regiones) {
-        this.regiones = regiones;
+    public void setCiudades(List<Ciudad> ciudades) {
+        this.ciudades = ciudades;
     }
 
     @Override
